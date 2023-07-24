@@ -202,6 +202,165 @@ WHERE good_type_id not IN (
   JOIN Payments ON Payments.good = Goods.good_id
   WHERE YEAR(date) = 2005 )
 ```
+- Задание 27 Узнать, сколько потрачено на каждую из групп товаров в 2005 году. Вывести название группы и сумму
+```
+SELECT good_type_name, SUM(amount * unit_price) AS costs
+FROM GoodTypes
+JOIN Goods ON Goods.type = GoodTypes.good_type_id
+JOIN Payments ON Payments.good = Goods.good_id
+WHERE YEAR(date) = 2005
+GROUP BY good_type_name
+```
+- Задание 28 Сколько рейсов совершили авиакомпании из Ростова (Rostov) в Москву (Moscow) ?
+```
+SELECT COUNT(company) as count
+FROM Trip
+WHERE town_from = 'Rostov' AND town_to = 'Moscow'
+```
+- Задание 29 Выведите имена пассажиров улетевших в Москву (Moscow) на самолете TU-134
+```
+SELECT DISTINCT name
+FROM Passenger
+JOIN Pass_in_trip on Passenger.id = Pass_in_trip.passenger
+JOIN Trip on Pass_in_trip.trip = Trip.id
+WHERE town_to = 'Moscow' AND plane = 'TU-134'
+```
+- Задание 30 Выведите нагруженность (число пассажиров) каждого рейса (trip). Результат вывести в отсортированном виде по убыванию нагруженности.
+```
+SELECT COUNT(passenger) AS count, trip
+FROM Pass_in_trip
+GROUP by trip
+ORDER by count DESC
+```
+- Задание 31 Вывести всех членов семьи с фамилией Quincey.
+```
+SELECT * FROM FamilyMembers
+WHERE member_name LIKE '%Quincey'
+```
+- Задание 32 Вывести средний возраст людей (в годах), хранящихся в базе данных. Результат округлите до целого в меньшую сторону.
+```
+SELECT FLOOR(avg(YEAR(CURRENT_DATE) - YEAR(birthday))) as age
+FROM FamilyMembers
+```
+- Задание 33 Найдите среднюю стоимость икры. В базе данных хранятся данные о покупках красной (red caviar) и черной икры (black caviar).
+```
+SELECT AVG(unit_price) as cost
+FROM Payments
+WHERE good in (
+	SELECT good_id
+	FROM Goods
+	WHERE good_name LIKE '%caviar')
+```
+- Задание 34 Сколько всего 10-ых классов
+```
+SELECT COUNT(*) as count
+FROM Class
+WHERE name = 10
+```
+- Задание 35 Сколько различных кабинетов школы использовались 2.09.2019 в образовательных целях ?
+```
+SELECT COUNT(*) as count
+FROM Schedule
+WHERE date = '2019-09-02'
+```
+- Задание 36 Выведите информацию об обучающихся живущих на улице Пушкина (ul. Pushkina)?
+```
+SELECT * FROM Student
+WHERE address LIKE 'ul. Pushkin%'
+```
+- Задание 37 Сколько лет самому молодому обучающемуся ?
+```
+SELECT MIN(TIMESTAMPDIFF(YEAR, birthday, CURRENT_DATE)) as year
+FROM Student
+```
+- Задание 38 Сколько Анн (Anna) учится в школе ?
+```
+SELECT COUNT(first_name) as count
+FROM Student
+WHERE first_name = 'Anna'
+```
+- Задание 39 Сколько обучающихся в 10 B классе ?
+```
+SELECT COUNT(student) as count
+FROM Student_in_class
+JOIN Class ON Student_in_class.class = Class.id
+WHERE Class.name = '10 B'
+```
+- Задание 40 Выведите название предметов, которые преподает Ромашкин П.П. (Romashkin P.P.) ?
+```
+SELECT name as subjects
+FROM Subject
+JOIN Schedule ON Subject.id = Schedule.subject
+JOIN Teacher ON Schedule.teacher = Teacher.id
+WHERE Teacher.last_name = 'Romashkin'
+AND Teacher.middle_name LIKE 'P%'
+AND Teacher.first_name LIKE 'P%'
+```
+- Задание 41 Во сколько начинается 4-ый учебный предмет по расписанию ?
+```
+SELECT start_pair
+FROM Timepair
+WHERE id = 4
+```
+- Задание 42 Сколько времени обучающийся будет находиться в школе, учась со 2-го по 4-ый уч. предмет?
+```
+SELECT DISTINCT TIMEDIFF('11:50:00', '09:20:00') as time
+FROM Timepair
+```
+- Задание 43 Выведите фамилии преподавателей, которые ведут физическую культуру (Physical Culture). Отcортируйте преподавателей по фамилии.
+```
+SELECT last_name
+FROM Teacher
+JOIN Schedule ON Schedule.teacher = Teacher.id
+JOIN Subject ON Subject.id = Schedule.subject
+WHERE Subject.name = 'Physical Culture'
+ORDER by last_name asc
+```
+- Задание 44 Найдите максимальный возраст (колич. лет) среди обучающихся 10 классов ?
+```
+SELECT MAX(TIMESTAMPDIFF(YEAR, birthday, CURRENT_DATE)) as max_year
+FROM Student
+JOIN Student_in_class ON Student.id = Student_in_class.student
+JOIN Class ON Student_in_class.class = Class.id
+WHERE Class.name LIKE '10%'
+```
+- Задание 45 Какие кабинеты чаще всего использовались для проведения занятий? Выведите те, которые использовались максимальное количество раз.
+```
+SELECT Schedule.classroom
+FROM Schedule
+GROUP BY classroom
+HAVING COUNT(*) =(
+	SELECT MAX(count)
+	FROM (SELECT COUNT(*) AS count
+		FROM Schedule
+		GROUP BY classroom) AS A)
+```
+- Задание 46 В каких классах введет занятия преподаватель "Krauze" ?
+```
+SELECT DISTINCT Class.name
+FROM Class
+JOIN Schedule ON Schedule.class = Class.id
+JOIN Teacher ON Teacher.id = Schedule.teacher
+WHERE last_name = 'Krauze'
+```
+- Задание 47 Сколько занятий провел Krauze 30 августа 2019 г.?
+```
+SELECT COUNT(teacher) as count
+FROM Schedule
+WHERE date = '2019-08-30' AND teacher = (
+	SELECT id
+	FROM Teacher
+	WHERE last_name = 'Krauze'
+	)
+```
+- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```
 
 
 

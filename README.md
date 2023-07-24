@@ -106,11 +106,14 @@ JOIN Passenger on Pass_in_trip.passenger = Passenger.id
 WHERE name = 'Steve Martin'
 AND town_to = 'London'
 ```
-- Задание 16 Вывести все названия самолётов, на которых можно улететь в Москву (Moscow)
+- Задание 16 Вывести отсортированный по количеству перелетов (по убыванию) и имени (по возрастанию) список пассажиров, совершивших хотя бы 1 полет.
 ```
-SELECT DISTINCT plane
-FROM Trip
-WHERE town_to = 'Moscow'
+SELECT name, COUNT(*) as count
+FROM Passenger
+INNER JOIN Pass_in_trip ON Passenger.id = Pass_in_trip.passenger
+GROUP BY passenger
+HAVING COUNT(*) > 0
+ORDER by COUNT(COUNT) DESC, name
 ```
 - Задание 17 В какие города можно улететь из Парижа (Paris) и сколько времени это займёт?
 ```
@@ -119,65 +122,85 @@ TIMEDIFF(time_in, time_out) as flight_time
 FROM Trip
 WHERE town_from = 'Paris'
 ```
-- Задание 18 Какие компании совершали перелеты на Boeing
+- Задание 18 Узнать, кто старше всех в семьe
 ```
-SELECT DISTINCT name
-FROM Company
-INNER JOIN Trip on Company.id = Trip.Company
-WHERE plane = 'Boeing'
+SELECT member_name
+FROM FamilyMembers
+WHERE DATE(birthday)
+LIMIT 1
 ```
-- Задание 19 Вывести все названия самолётов, на которых можно улететь в Москву (Moscow)
+- Задание 19 Определить, кто из членов семьи покупал картошку (potato)
 ```
-SELECT DISTINCT plane
-FROM Trip
-WHERE town_to = 'Moscow'
+SELECT DISTINCT FamilyMembers.status
+FROM FamilyMembers
+INNER JOIN Payments ON FamilyMembers.member_id = Payments.family_member
+JOIN Goods ON Payments.good = Goods.good_id
+WHERE Goods.good_name = 'potato'
 ```
-- Задание 20 В какие города можно улететь из Парижа (Paris) и сколько времени это займёт?
+- Задание 20 Сколько и кто из семьи потратил на развлечения (entertainment). Вывести статус в семье, имя, сумму
 ```
-SELECT town_to,
-TIMEDIFF(time_in, time_out) as flight_time
-FROM Trip
-WHERE town_from = 'Paris'
+SELECT FamilyMembers.status, FamilyMembers.member_name, SUM(Payments.unit_price * amount) AS costs
+FROM FamilyMembers
+JOIN Payments ON FamilyMembers.member_id = Payments.family_member
+JOIN Goods ON Payments.good = Goods.good_id
+JOIN GoodTypes ON Goods.type = GoodTypes.good_type_id
+WHERE GoodTypes.good_type_name = 'entertainment'
+GROUP BY FamilyMembers.status, FamilyMembers.member_name;
 ```
-- Задание 21 Какие компании совершали перелеты на Boeing
+- Задание 21 Определить товары, которые покупали более 1 раза
 ```
-SELECT DISTINCT name
-FROM Company
-INNER JOIN Trip on Company.id = Trip.Company
-WHERE plane = 'Boeing'
+SELECT Goods.good_name
+FROM Goods
+JOIN Payments ON Payments.good = Goods.good_id
+GROUP BY Goods.good_name
+HAVING COUNT(*) > 1;
 ```
-- Задание 22 Вывести все названия самолётов, на которых можно улететь в Москву (Moscow)
+- Задание 22 Найти имена всех матерей (mother)
 ```
-SELECT DISTINCT plane
-FROM Trip
-WHERE town_to = 'Moscow'
+SELECT member_name
+FROM FamilyMembers
+WHERE status = 'mother'
 ```
-- Задание 23 В какие города можно улететь из Парижа (Paris) и сколько времени это займёт?
+- Задание 23 Найдите самый дорогой деликатес (delicacies) и выведите его цену
 ```
-SELECT town_to,
-TIMEDIFF(time_in, time_out) as flight_time
-FROM Trip
-WHERE town_from = 'Paris'
+SELECT Goods.good_name, unit_price
+FROM Goods
+JOIN Payments ON Goods.good_id = Payments.good
+JOIN GoodTypes ON GoodTypes.good_type_id = Goods.type
+WHERE Payments.unit_price =(
+   SELECT MAX(Payments.unit_price)
+   FROM Goods
+			JOIN Payments ON Goods.good_id = Payments.good
+			JOIN GoodTypes ON GoodTypes.good_type_id = Goods.type
+		WHERE GoodTypes.good_type_name = 'delicacies'	)
 ```
-- Задание 24 Какие компании совершали перелеты на Boeing
+- Задание 24 Определить кто и сколько потратил в июне 2005
 ```
-SELECT DISTINCT name
-FROM Company
-INNER JOIN Trip on Company.id = Trip.Company
-WHERE plane = 'Boeing'
+SELECT FamilyMembers.member_name, SUM(Payments.amount * Payments.unit_price) AS costs
+FROM FamilyMembers
+JOIN Payments ON FamilyMembers.member_id = Payments.family_member
+WHERE Payments.date >= '2005-06-01'
+AND Payments.date < '2005-07-01'
+GROUP BY FamilyMembers.member_name;
 ```
-- Задание 25 Вывести все названия самолётов, на которых можно улететь в Москву (Moscow)
+- Задание 25 Определить, какие товары не покупались в 2005 году
 ```
-SELECT DISTINCT plane
-FROM Trip
-WHERE town_to = 'Moscow'
+SELECT Goods.good_name
+FROM Goods
+LEFT JOIN Payments ON Payments.good = Goods.good_id
+AND YEAR(Payments.date) = 2005
+WHERE Payments.good IS NULL;
 ```
-- Задание 26 В какие города можно улететь из Парижа (Paris) и сколько времени это займёт?
+- Задание 26 Определить группы товаров, которые не приобретались в 2005 году
 ```
-SELECT town_to,
-TIMEDIFF(time_in, time_out) as flight_time
-FROM Trip
-WHERE town_from = 'Paris'
+SELECT good_type_name
+FROM GoodTypes
+WHERE good_type_id not IN (
+  SELECT good_type_id
+  FROM GoodTypes
+  JOIN Goods ON Goods.type = GoodTypes.good_type_id
+  JOIN Payments ON Payments.good = Goods.good_id
+  WHERE YEAR(date) = 2005 )
 ```
 
 

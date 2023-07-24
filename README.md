@@ -27,5 +27,35 @@ WHERE town_from = "Moscow"
 SELECT name
 FROM Passenger
 WHERE name LIKE '%man'
+ ```
+- Задание 5 Вывести количество рейсов, совершенных на TU-134
+```
+SELECT COUNT(plane) as count
+FROM trip
+WHERE plane = 'TU-134'
+```
+- Задание 6 Какие компании совершали перелеты на Boeing
+```
+SELECT DISTINCT name
+FROM Company
+INNER JOIN Trip on Company.id = Trip.Company
+WHERE plane = 'Boeing'
+```
+- Задание 7 Вывести все названия самолётов, на которых можно улететь в Москву (Moscow)
+```
+SELECT DISTINCT plane
+FROM Trip
+WHERE town_to = 'Moscow'
+```
+- Задание 8 В какие города можно улететь из Парижа (Paris) и сколько времени это займёт?
+```
+SELECT town_to,
+TIMEDIFF(time_in, time_out) as flight_time
+FROM Trip
+WHERE town_from = 'Paris'
+```
+
+
+
 
 

@@ -7,3 +7,9 @@
 ## SQL Academy   
 В данном репозитории представлены мои решения задач из SQL Academy.  
 SQL Academy по ссылке: [SQL Academy](https://sql-academy.org/ru/trainer)
+- Задание 1
+ Вывести имена всех людей, которые есть в базе данных авиакомпаний
+```
+SELECT name
+from passenger
+```

@@ -361,6 +361,92 @@ JOIN Class ON Class.id = class
 GROUP BY Class.name
 ORDER BY count DESC
 ```
+- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```
+- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```- Задание 48 Выведите заполненность классов в порядке убывания
+```
+SELECT name, COUNT(*) AS count
+FROM Student_in_class
+JOIN Class ON Class.id = class
+GROUP BY Class.name
+ORDER BY count DESC
+```
 
 
 

@@ -361,92 +361,75 @@ JOIN Class ON Class.id = class
 GROUP BY Class.name
 ORDER BY count DESC
 ```
-- Задание 48 Выведите заполненность классов в порядке убывания
+- Задание 49 Какой процент обучающихся учится в 10 A классе ?
 ```
-SELECT name, COUNT(*) AS count
+SELECT (
+SELECT COUNT(*)
 FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
+JOIN Class ON class = Class.id
+WHERE Class.name = '10 A') / (
+	SELECT COUNT(*)
+	FROM Student_in_class ) * 100 AS percent
 ```
-- Задание 48 Выведите заполненность классов в порядке убывания
+- Задание 50 Какой процент обучающихся родился в 2000 году? Результат округлить до целого в меньшую сторону.
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
-```- Задание 48 Выведите заполненность классов в порядке убывания
+SELECT FLOOR(
+	(SELECT COUNT(*)
+	FROM Student
+	WHERE YEAR(birthday) = 2000) / (
+		SELECT COUNT(*)FROM Student) * 100) AS percent
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
-```- Задание 48 Выведите заполненность классов в порядке убывания
+- Задание 51 Добавьте товар с именем "Cheese" и типом "food" в список товаров (Goods).
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
-```- Задание 48 Выведите заполненность классов в порядке убывания
+INSERT INTO Goods (SELECT COUNT(*) + 1,'Cheese',
+	(SELECT good_type_id
+	FROM GoodTypes
+	WHERE good_type_name = 'food' limit 1
+		)
+		FROM Goods
+		)
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
-```- Задание 48 Выведите заполненность классов в порядке убывания
+- Задание 52 Добавьте в список типов товаров (GoodTypes) новый тип "auto".
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
-```- Задание 48 Выведите заполненность классов в порядке убывания
+INSERT INTO GoodTypes (
+	SELECT COUNT(*) + 1,'auto'
+	FROM GoodTypes)
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
-```- Задание 48 Выведите заполненность классов в порядке убывания
+- Задание 53 Измените имя "Andie Quincey" на новое "Andie Anthony".
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
-```- Задание 48 Выведите заполненность классов в порядке убывания
+UPDATE FamilyMembers
+SET member_name = 'Andie Anthony'
+WHERE member_name = 'Andie Quincey';
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
-```- Задание 48 Выведите заполненность классов в порядке убывания
+- Задание 56 Удалить все перелеты, совершенные из Москвы (Moscow).
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
-```- Задание 48 Выведите заполненность классов в порядке убывания
+DELETE FROM Trip
+WHERE town_from = 'Moscow'
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
-```- Задание 48 Выведите заполненность классов в порядке убывания
+- Задание 57 Перенести расписание всех занятий на 30 мин. вперед.
 ```
-SELECT name, COUNT(*) AS count
-FROM Student_in_class
-JOIN Class ON Class.id = class
-GROUP BY Class.name
-ORDER BY count DESC
+UPDATE Timepair
+SET start_pair = DATE_ADD(start_pair, INTERVAL 30 MINUTE),
+	end_pair = DATE_ADD(end_pair, INTERVAL 30 MINUTE);
 ```
+- Задание 59 Вывести пользователей,указавших Белорусский номер телефона ? Телефонный код Белоруссии +375.
+```
+SELECT *
+FROM Users
+WHERE phone_number LIKE '+375%'
+```
+- Задание 60 Выведите идентификаторы преподавателей, которые хотя бы один раз за всё время преподавали в каждом из одиннадцатых классов.
+```
+SELECT teacher
+FROM Schedule
+JOIN Class on Schedule.class = Class.id
+WHERE name like '11%'
+GROUP by teacher
+HAVING COUNT(DISTINCT name) = 2
+```
+
+
+
 
 
 
